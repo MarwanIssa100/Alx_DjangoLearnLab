@@ -8,9 +8,9 @@ This document describes the process for deleting an instance of the `Book` model
 from bookshelf.models import Book
 
 # Retrieve the book to be deleted
-book_to_delete = Book.objects.get(title='1984')
+book = Book.objects.get(title='1984')
 
-book_to_delete.delete()
+book.delete()
 # Expected output: (1, {'library.Book': 1}), indicating one `Book` instance was deleted
 
 # Confirm deletion by retrieving all books
