@@ -1,7 +1,15 @@
 from models import Author, Book , Library, Librarian
 
-author = Author.objects.get(name = "J. K. Rowling")
+def get_books_by_author(author_name):
+    books = Book.objects.filter(author=author_name)
+    return books
 
-books = Book.objects.all()
+def get_books_in_library(library_name):
+    library = Library.objects.get(name=library_name)
+    books = library.books.all() 
+    return books
 
-librarian = Librarian.objects.get(library = "Hogwarts")
+def get_librarian_for_library(library_name):
+    library = Library.objects.get(name=library_name)
+    librarian = library.librarian      
+    return librarian
