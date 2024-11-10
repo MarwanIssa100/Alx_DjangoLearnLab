@@ -53,4 +53,4 @@ def is_member(user):
 @user_passes_test(is_member)
 def member_view(request):
     # This view is only accessible to users with the 'Member' role
-    return render(request, 'member_view.html')
+    return render(request, 'member_view.html')  
