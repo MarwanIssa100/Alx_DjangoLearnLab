@@ -2,6 +2,7 @@ from django.contrib import admin
 from .models import Book , CustomUser
 from  django.contrib.auth.admin import UserAdmin
 
+
 # Register your models here.
 
 class BookAdmin(admin.ModelAdmin):
