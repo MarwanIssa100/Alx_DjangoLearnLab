@@ -1,5 +1,6 @@
 from django.contrib.auth.decorators import permission_required,has_permission
 from django.shortcuts import render, redirect
+from .models import Book
 
 
 # Create your views here.
