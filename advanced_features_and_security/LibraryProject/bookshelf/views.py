@@ -5,6 +5,9 @@ from .models import Book
 
 # Create your views here.
 
+
+["book_list", "raise_exception", "books"]
+["from .forms import ExampleForm"]
 @permission_required('app_name.can_edit', raise_exception=True)
 def edit_view(request, pk):
     # View code here
