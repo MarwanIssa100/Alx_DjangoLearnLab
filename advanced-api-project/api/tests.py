@@ -6,6 +6,8 @@ from .urls import urlpatterns
 
 # Create your tests here.
 
+# This Python class contains test cases for creating, retrieving, updating, and deleting books using
+# Django REST framework API testing.
 class BookAPITestCase(APITestCase):
     def setUp(self):
         self.client = APIClient()
@@ -38,7 +40,7 @@ class BookAPITestCase(APITestCase):
     def test_update_book(self):
         # Create a book
         book = Book.objects.create(title='Test Book', author='Test Author', publication_year=2021)
-        update_url = reverse('update', args=[book.id])  # Assuming 'book-detail' is the name of the detail URL
+        update_url = reverse('update', args=[book.id])  # Assuming 'detail' is the name of the detail URL
 
         # Update the book
         updated_data = {'title': 'Updated Title'}
