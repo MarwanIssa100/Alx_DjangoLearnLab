@@ -48,3 +48,7 @@ class DeleteView(viewsets.ModelViewSet):
     queryset = Book.objects.all()
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
+    
+class AuthorView(viewsets.ModelViewSet):
+    queryset = Author.objects.all()
+    serializer_class = AuthorSerializer
