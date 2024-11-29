@@ -21,6 +21,7 @@ class BookAPITestCase(APITestCase):
         self.delete_url = reverse('delete', args=[1])
 
     def test_create_book(self):
+        response =self.client.login(username='admin', password='admin')
         response = self.client.post(self.create_url, self.book_data, format='json')
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         self.assertEqual(response.data['title'], self.book_data['title'])
