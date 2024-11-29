@@ -18,5 +18,8 @@ class Book(models.Model):
     author = models.ForeignKey(Author, on_delete=models.CASCADE)
     publication_year = models.IntegerField()
     
+    search_fields = ['title', 'author']
+    ordering = ['title', 'publication_year']
+    
     def __str__(self):
         return self.title
