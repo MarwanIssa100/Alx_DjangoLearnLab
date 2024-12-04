@@ -1,0 +1,3 @@
+djando
+mysqlclient
+
