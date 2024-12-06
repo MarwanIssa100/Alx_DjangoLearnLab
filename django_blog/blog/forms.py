@@ -23,6 +23,9 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content' , 'tag']
+        widgets ={ 
+            'tag': TagWidget
+        }
         TagWidget()
         
 class CommentForm(forms.ModelForm):
