@@ -1,9 +1,9 @@
-from django.shortcuts import render , redirect
+from django.shortcuts import render , redirect , get_object_or_404
 from django.contrib.auth import login , logout , authenticate
 from django.contrib import messages
-from .forms import SignUpForm , LoginForm , ProfileForm , PostForm
+from .forms import SignUpForm , LoginForm , ProfileForm , PostForm ,CommentForm
 from django.views.generic import ListView , DetailView , CreateView ,UpdateView , DeleteView
-from .models import Post
+from .models import Post , Comment
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin ,UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
@@ -12,7 +12,9 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 @login_required
 def home(request):
-    return render(request , 'blog/base.html')
+    posts = Post.objects.all()   
+    context = {'posts': posts}
+    return render(request , 'blog/blogs.html' ,  context) 
 
 def register(request):
     if request.method == 'POST':
@@ -75,6 +77,10 @@ class DetailView(DetailView):
     
     def get_queryset(self):
         return Post.objects.filter(id = self.kwargs['pk'])
+    def get_context_data(self , **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['comments'] = Comment.objects.filter(post = self.object)
+        return context
 
 class CreateView(LoginRequiredMixin,CreateView):
     model = Post
@@ -117,3 +123,20 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
         """
         post = self.get_object()
         return post.author == self.request.user
+    
+def CommentCreateView(request , pk):
+    post = get_object_or_404(Post , pk = pk)
+    if request.method == 'POST':
+        comment = CommentForm(request.POST)
+        if comment.is_valid():
+            #we should make (commit = False) to let django set the user and post ids before saving the comment form  
+            comment = comment.save(commit = False)
+            comment.author = request.user
+            comment.post = post
+            comment.save()
+            return redirect('post_detail' , pk = post.pk)
+            
+    else:
+        comment = CommentForm()
+    return render(request , 'blog/comment_form.html' , {'comment':comment , 'post':post})
+            
