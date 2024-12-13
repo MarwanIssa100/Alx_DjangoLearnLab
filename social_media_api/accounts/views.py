@@ -1,48 +1,40 @@
+from django.shortcuts import render
+from .serializers import CustomUserSerializer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import status
-from .serializers import UserRegistrationSerializer, UserLoginSerializer , TokenSerializer
-from rest_framework.permissions import AllowAny
 from rest_framework.authtoken.models import Token
+from rest_framework import status
 from rest_framework.authtoken.views import ObtainAuthToken
 
 
-# User Registration View
+
+# View for user registration
 class UserRegistrationView(APIView):
-    permission_classes = [AllowAny]
-
     def post(self, request):
-        serializer = UserSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response({"message": "User registered successfully"}, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-# User Login View
-class UserLoginView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        serializer = UserLoginSerializer(data=request.data)
-        if serializer.is_valid():
-            user = serializer.validated_data
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({
-                'token': token.key,
-                'username': user.username
-            }, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-class UserRegistrationView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        serializer = UserRegistrationSerializer(data=request.data)
+        serializer = CustomUserSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.save()
-            token = Token.objects.get(user=user)
+            token, created = Token.objects.get_or_create(user=user)
             return Response({
-                'token': token.key,
-                'username': user.username
+                'user': serializer.data,
+                'token': token.key
             }, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+# Token login view
+class CustomAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        serializer = self.serializer_class(data=request.data, context={'request': request})
+        serializer.is_valid(raise_exception=True)
+        user = serializer.validated_data['user']
+        token, created = Token.objects.get_or_create(user=user)
+        return Response({
+            'token': token.key,
+            'user_id': user.pk,
+            'username': user.username
+        })
+
+# Create your views here.
+
+#["generics.GenericAPIView", "permissions.IsAuthenticated", "CustomUser.objects.all()"]
+

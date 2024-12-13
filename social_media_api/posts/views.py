@@ -1,16 +1,9 @@
 from django.shortcuts import render
-from rest_framework import viewsets
-from .models import Post , Comment
-from .serializers import PostSerializer , CommentSerializer
 
-
+#["viewsets", "viewsets.ModelViewSet", "Comment.objects.all()", "Post.objects.all()"]
 # Create your views here.
 
-class PostViewSet(viewsets.ModelViewSet):
-    queryset = Post.objects.all()
-    serializer_class = PostSerializer
-
-
-class CommentViewSet(viewsets.ModelViewSet):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+#["Post.objects.filter(author__in=following_users).order_by"
+# "following.all()"
+# "permissions.IsAuthenticated"]
+#["generics.get_object_or_404(Post, pk=pk)", "Like.objects.get_or_create(user=request.user, post=post)", "Notification.objects.create"]

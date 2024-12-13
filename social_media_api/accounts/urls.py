@@ -1,8 +1,14 @@
+# accounts/urls.py
 from django.urls import path
-from . import views
+from .views import UserRegistrationView, CustomAuthToken
 
 urlpatterns = [
-    path('login/', views.UserLoginView.as_view(), name='login'),
-    path('register/', views.UserRegistrationView.as_view(), name='register'),
-    # path('logout/', views.LogoutView.as_view(), name='logout'),
+    # URL for user registration
+    path('register/', UserRegistrationView.as_view(), name='user-registration'),
+
+    # URL for login (authentication via token)
+    path('login/', CustomAuthToken.as_view(), name='token-login'),
 ]
+
+
+#["unfollow/<int:user_id>/", "follow/<int:user_id>"]
