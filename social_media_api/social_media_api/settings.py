@@ -26,9 +26,9 @@ AUTH_USER_MODEL = 'accounts.User'
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'accounts',
     'rest_framework',
     'rest_framework.authtoken',
+    'posts',
 ]
 
 MIDDLEWARE = [
