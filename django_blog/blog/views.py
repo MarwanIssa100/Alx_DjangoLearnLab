@@ -200,7 +200,7 @@ class PostSearchView(ListView):
             return Post.objects.filter(
                 Q(title__icontains=query) |
                 Q(content__icontains=query) |
-                Q(tags__name__icontains=query).distinct()
+                Q(tag__name__icontains=query)
             )
         return Post.objects.all()
     
@@ -211,7 +211,7 @@ class PostByTagListView(ListView):
 
     def get_queryset(self):
         tag = self.kwargs.get('tag')
-        return Post.objects.filter(tags__name__in=[tag])
+        return Post.objects.filter(tag__name__in=[tag])
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

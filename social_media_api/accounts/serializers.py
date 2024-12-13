@@ -34,7 +34,7 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError("Invalid username or password")
 
         # Retrieve or create token for the user
-        token, created = Token.objects.get_or_create(user=user)
+        token, created = Token.objects.create(user=user)
         return {'username': user.username, 'token': token.key}
 
 class TokenSerializer(serializers.ModelSerializer):
